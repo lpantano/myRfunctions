@@ -1,9 +1,26 @@
-require(tools)
 save_report<- function(fn){
     load(dropbox_credentials, file="~/.my_dropbox_credentials.rdata")
     dropbox_save(dropbox_credentials, b, file=paste0("Public/hsph/"),fn, verbose = TRUE, ext = ".rda")
 }
 
+#' compress output files
+#' @export
+compress_results <- function(path, prefix="results", quiet=TRUE){
+  origin = basename(path)
+  root = dirname(path)
+  tar_file = file.path(root, paste0(prefix, "_", format(Sys.time(), "%b_%d_%Y"), ".tgz"))
+  cmd = paste("tar czvf", tar_file, "-C", root, origin)
+  if (!quiet)
+    cat(cmd,"\n")
+  system(cmd)
+  tar_file
+}
+
+#' render to html
+#' @import rmarkdown
+#' @import knitr
+#' @import tools
+#' @export
 render_2_drop <- function(rmd,dn)
 {
     path_out <- paste0("~/Dropbox/Public/hsph/",dn)
@@ -48,8 +65,9 @@ copy_batch_2_drop <- function(pattern, dn){
     file.copy(flist, path_out)
 }
 
-
-save_file <- function(dat, fn){
+#' save file
+#' @export
+save_file <- function(dat, fn, basedir="."){
     tab <- cbind(id=data.frame(id=row.names(dat)), as.data.frame(dat))
-    write.table(tab, fn, quote=F, sep="\t", row.names=F)
+    write.table(tab, file.path(basedir, fn), quote=F, sep="\t", row.names=F)
 }

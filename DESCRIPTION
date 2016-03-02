@@ -1,0 +1,16 @@
+Package: myRfunctions
+Type: Package
+Title: Functions mainly used to create automated reports
+Version: 0.1
+Date: 2016-02-19
+Author: Lorena Pantano
+Maintainer: Lorena Pantano <lorena.pantano@gmail.com>
+Description: Using functions to write files, render reports, create compressed
+    files, get correct links ...
+Imports:
+  rmarkdown,
+  knitr,
+  tools
+License: MIT
+LazyData: TRUE
+RoxygenNote: 5.0.1
